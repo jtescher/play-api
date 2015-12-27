@@ -1,4 +1,4 @@
-<scalastyleo>
+<scalastyle>
  <name>Scalastyle standard configuration</name>
  <check level="error" class="org.scalastyle.file.FileTabChecker" enabled="true"></check>
  <check level="error" class="org.scalastyle.file.FileLengthChecker" enabled="true">

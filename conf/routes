@@ -3,4 +3,11 @@
 # ~~~~
 
 # Health Check
-GET     /                           controllers.HealthCheckController.index
+GET       /                controllers.HealthCheckController.index
+
+# Posts
+GET       /v1/posts        controllers.v1.PostsController.index
+POST      /v1/posts        controllers.v1.PostsController.create
+GET       /v1/posts/:id    controllers.v1.PostsController.show(id: java.util.UUID)
+PUT       /v1/posts/:id    controllers.v1.PostsController.update(id: java.util.UUID)
+DELETE    /v1/posts/:id    controllers.v1.PostsController.destroy(id: java.util.UUID)

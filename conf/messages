@@ -1,0 +1,9 @@
+# General Exceptions
+exceptions.404=Sorry, we couldn't find what you're looking for.
+exceptions.500=Sorry, something went wrong. Try again later?
+
+# Post Format Exceptions
+post.invalid=Post is not valid
+post.id.invalid=Post ID is not valid
+post.title.invalid=Post title is not valid
+post.body.invalid=Post body is not valid

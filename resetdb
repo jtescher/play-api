@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Grab DB user from ENV variable or application.conf
+if [ -z "$DATABASE_USER" ]; then
+  DATABASE_USER=$(sed -n '/^slick.dbs.default.db.user="\(.*\)"$/s//\1/p' "conf/application.conf")
+fi
+
+# Grab DB password from ENV variable or application.conf
+if [ -z "$DATABASE_PASSWORD" ]; then
+  DATABASE_PASSWORD=$(sed -n '/^slick.dbs.default.db.password="\(.*\)"$/s//\1/p' "conf/application.conf")
+fi
+
+# Grab DB name from ENV variable or application.conf
+if [ -z "$DATABASE_NAME" ]; then
+  DATABASE_NAME=$(sed -n '/^slick.dbs.default.db.name="\(.*\)"$/s//\1/p' "conf/application.conf")
+fi
+
+# Grab test DB name from ENV variable or application.conf
+if [ -z "$TEST_DATABASE_NAME" ]; then
+  TEST_DATABASE_NAME=$(sed -n '/^slick.dbs.test.db.name="\(.*\)"$/s//\1/p' "conf/application.conf")
+fi
+
+# Grab DB host from ENV variable or application.conf
+if [ -z "$DATABASE_HOST" ]; then
+  DATABASE_HOST=$(sed -n '/^slick.dbs.default.db.host="\(.*\)"$/s//\1/p' "conf/application.conf")
+fi
+
+# Grab DB port from ENV variable or application.conf
+if [ -z "$DATABASE_PORT" ]; then
+  DATABASE_PORT=$(sed -n '/^slick.dbs.default.db.port="\(.*\)"$/s//\1/p' "conf/application.conf")
+fi
+
+# Grab DB host from ENV variable or application.conf
+if [ -z "$DATABASE_HOST" ]; then
+  DATABASE_HOST=$(sed -n '/^slick.dbs.default.db.host="\(.*\)"$/s//\1/p' "conf/application.conf")
+fi
+
+echo "********** STARTING DATABASE RESTORE **********"
+
+{
+  psql -h "$DATABASE_HOST" -U postgres -c "CREATE ROLE $DATABASE_USER WITH SUPERUSER LOGIN PASSWORD '$DATABASE_PASSWORD'" 2>/dev/null
+} || {
+  echo "Role $DATABASE_USER already exists, skipping..."
+}
+
+psql -U postgres -c "DROP DATABASE IF EXISTS $DATABASE_NAME"
+psql -U postgres -c "DROP DATABASE IF EXISTS $TEST_DATABASE_NAME"
+
+psql -U postgres -c "CREATE DATABASE $DATABASE_NAME OWNER $DATABASE_USER;"
+psql -U postgres -c "CREATE DATABASE $TEST_DATABASE_NAME OWNER $DATABASE_USER;"
+
+echo "********** DATABASE RESTORE COMPLETE **********"
