@@ -13,8 +13,5 @@ addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.6.0")
 // Server Monitoring
 addSbtPlugin("com.gilt.sbt" % "sbt-newrelic" % "0.1.4")
 
-// Build Info
-addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.5.0")
-
 // UTC timezone
 addSbtPlugin("com.timgroup" % "sbt-utc" % "0.0.14")
