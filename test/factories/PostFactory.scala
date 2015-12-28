@@ -1,9 +1,9 @@
 package factories
 
+import com.example.api.daos.PostDAO
+import com.example.api.models.Post
 import com.google.inject.Inject
-import daos.PostDAO
 import java.util.UUID
-import models.Post
 import play.api.db.slick.DatabaseConfigProvider
 import scala.concurrent.ExecutionContext
 import utils.DatabaseHelper

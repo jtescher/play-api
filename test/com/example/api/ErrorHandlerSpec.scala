@@ -1,10 +1,11 @@
-import models.errors.ModelNotFoundException
-import models.exceptions.ModelFormatException
+package com.example.api
+
+import com.example.api.models.exceptions.{ ModelFormatException, ModelNotFoundException }
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.{ OneAppPerSuite, PlaySpec }
 import play.api.data.validation.ValidationError
 import play.api.http.MimeTypes.JSON
-import play.api.i18n.{ MessagesApi, Messages, I18nSupport }
+import play.api.i18n.{ I18nSupport, Messages, MessagesApi }
 import play.api.libs.json.{ JsPath, KeyPathNode }
 import play.api.test.FakeRequest
 import play.api.test.Helpers._

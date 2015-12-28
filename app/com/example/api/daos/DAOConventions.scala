@@ -1,9 +1,8 @@
-package daos
+package com.example.api.daos
 
 import java.util.UUID
-import models.errors.ModelNotFoundException
 import play.api.db.slick.DatabaseConfigProvider
-import scala.concurrent.{ Future, ExecutionContext }
+import scala.concurrent.{ ExecutionContext, Future }
 import scala.language.reflectiveCalls
 import slick.driver.JdbcProfile
 
@@ -35,22 +34,12 @@ trait DAOConventions[T<:{ def id: UUID }] { // scalastyle:ignore structural.type
     db.run(table += t).map(_ => t)
   }
 
-  def findOrCreate(t: T)(implicit ec: ExecutionContext): Future[T] = {
-    findById(t.id).flatMap {
-      case Some(foundT) => Future.successful(foundT)
-      case None => create(t)
-    }
-  }
-
   def findById(id: UUID): Future[Option[T]] = {
     db.run(table.filter(t => t.id === id && t.deleted === false).result.headOption)
   }
 
-  def update(t: T)(implicit ec: ExecutionContext): Future[T] = {
-    findById(t.id).flatMap {
-      case Some(_) => db.run(table.filter(_.id === t.id).update(t)).map(_ => t)
-      case None => Future.failed(ModelNotFoundException)
-    }
+  def insertOrUpdate(t: T)(implicit ec: ExecutionContext): Future[T] = {
+    db.run(table.insertOrUpdate(t)).map(_ => t)
   }
 
   def destroyById(id: UUID): Future[Int] = {

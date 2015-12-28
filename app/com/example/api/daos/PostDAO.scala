@@ -1,7 +1,7 @@
-package daos
+package com.example.api.daos
 
+import com.example.api.models.Post
 import com.google.inject.Inject
-import models.Post
 import play.api.db.slick.DatabaseConfigProvider
 
 class PostDAO @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends DAOConventions[Post] {

@@ -1,6 +1,6 @@
-package controllers
+package com.example.api.controllers
 
-import play.api.mvc.{ AnyContent, Action, Controller }
+import play.api.mvc.{ Action, AnyContent, Controller }
 
 class HealthCheckController extends Controller {
 

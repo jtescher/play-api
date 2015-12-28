@@ -1,11 +1,12 @@
+package com.example.api
+
+import com.example.api.models.exceptions.{ ModelFormatException, ModelNotFoundException }
 import com.google.inject.Inject
 import java.util.UUID
-import models.errors.ModelNotFoundException
-import models.exceptions.ModelFormatException
 import play.api.Logger
 import play.api.http.HttpErrorHandler
-import play.api.http.Status.{ NOT_FOUND, UNPROCESSABLE_ENTITY }
-import play.api.i18n.{ MessagesApi, I18nSupport, Messages }
+import play.api.http.Status.{ INTERNAL_SERVER_ERROR, NOT_FOUND, UNPROCESSABLE_ENTITY }
+import play.api.i18n.{ I18nSupport, Messages, MessagesApi }
 import play.api.libs.json.Json
 import play.api.mvc.Results.{ InternalServerError, Status }
 import play.api.mvc.{ RequestHeader, Result }
@@ -35,13 +36,13 @@ class ErrorHandler @Inject() (val messagesApi: MessagesApi) extends HttpErrorHan
       case e: ModelFormatException => onClientError(request, UNPROCESSABLE_ENTITY, Messages(e.getI18nKey))
       case NonFatal(e) => {
         val id = UUID.randomUUID
-        Logger.error(s"$id - Error while processing request. Returning 500 for ${request.uri}")
+        Logger.error(s"$id - Error while processing request. Returning $INTERNAL_SERVER_ERROR for ${request.uri}")
 
         Future.successful(InternalServerError(Json.obj(
           "error" -> Json.obj(
             "id" -> id,
-            "statusCode" -> "500",
-            "message" -> Messages("exceptions.500")
+            "statusCode" -> INTERNAL_SERVER_ERROR.toString,
+            "message" -> Messages(s"exceptions.$INTERNAL_SERVER_ERROR")
           )
         )))
       }

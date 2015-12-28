@@ -1,4 +1,4 @@
-package controllers
+package com.example.api.controllers
 
 import org.scalatestplus.play.{ OneAppPerSuite, PlaySpec }
 import play.api.http.MimeTypes.TEXT

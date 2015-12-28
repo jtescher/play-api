@@ -1,6 +1,6 @@
 package utils
 
-import daos.PostDAO
+import com.example.api.daos.PostDAO
 import play.api.Application
 import play.api.db.slick.DatabaseConfigProvider
 import slick.dbio.DBIO

@@ -1,6 +1,6 @@
-package serializers.v1
+package com.example.api.serializers.v1
 
-import models.Post
+import com.example.api.models.Post
 import play.api.libs.json.{ JsObject, Json, Writes }
 
 object PostSerializer {

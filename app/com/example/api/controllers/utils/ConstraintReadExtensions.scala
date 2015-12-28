@@ -1,4 +1,4 @@
-package controllers.utils
+package com.example.api.controllers.utils
 
 import play.api.data.validation.ValidationError
 import play.api.libs.json.Reads

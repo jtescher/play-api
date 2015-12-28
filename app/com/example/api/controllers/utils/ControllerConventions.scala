@@ -1,6 +1,6 @@
-package controllers.utils
+package com.example.api.controllers.utils
 
-import models.exceptions.ModelFormatException
+import com.example.api.models.exceptions.ModelFormatException
 import play.api.libs.json._
 import play.api.mvc.{ BodyParser, BodyParsers }
 import scala.concurrent.ExecutionContext

@@ -1,4 +1,4 @@
-package models.exceptions
+package com.example.api.models.exceptions
 
 import play.api.data.validation.ValidationError
 import play.api.libs.json.JsPath

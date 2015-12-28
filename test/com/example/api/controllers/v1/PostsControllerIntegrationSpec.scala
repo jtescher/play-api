@@ -1,17 +1,16 @@
-package controllers.v1
+package com.example.api.controllers.v1
 
+import com.example.api.models.exceptions.{ ModelFormatException, ModelNotFoundException }
 import factories.PostFactory
-import models.errors.ModelNotFoundException
-import models.exceptions.ModelFormatException
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.play.{ OneAppPerSuite, PlaySpec }
 import play.api.http.MimeTypes.JSON
 import play.api.libs.json.Json
-import play.api.test.{ FakeApplication, FakeRequest }
 import play.api.test.Helpers._
+import play.api.test.{ FakeApplication, FakeRequest }
 import scala.concurrent.ExecutionContext
-import utils.{ TestDatabaseConfig, DatabaseCleaner }
+import utils.{ DatabaseCleaner, TestDatabaseConfig }
 
 class PostsControllerIntegrationSpec extends PlaySpec with OneAppPerSuite with BeforeAndAfterEach with ScalaFutures {
   implicit val ec = app.injector.instanceOf[ExecutionContext]

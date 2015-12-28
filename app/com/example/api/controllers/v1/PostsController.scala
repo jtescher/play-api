@@ -1,16 +1,16 @@
-package controllers.v1
+package com.example.api.controllers.v1
 
+import com.example.api.controllers.utils.ConstraintReadExtensions.nonEmpty
+import com.example.api.controllers.utils.ControllerConventions
+import com.example.api.models.Post
+import com.example.api.serializers.v1.PostSerializer.postJsonWrites
+import com.example.api.services.PostService
 import com.google.inject.Inject
-import controllers.utils.ConstraintReadExtensions.nonEmpty
-import controllers.utils.ControllerConventions
 import java.util.UUID
-import models.Post
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ Reads, __, Json }
+import play.api.libs.json.{ Json, Reads, __ }
 import play.api.mvc.{ Action, AnyContent, Controller }
 import scala.concurrent.ExecutionContext
-import serializers.v1.PostSerializer.postJsonWrites
-import services.PostService
 
 class PostsController @Inject() (postService: PostService)(implicit ec: ExecutionContext) extends Controller with ControllerConventions {
 
@@ -21,7 +21,7 @@ class PostsController @Inject() (postService: PostService)(implicit ec: Executio
   }
 
   def create: Action[Post] = Action.async(jsonModelParser[Post](__ \ 'post)) { request =>
-    postService.findOrCreate(request.body).map { post =>
+    postService.insertOrUpdate(request.body).map { post =>
       Created(Json.obj("post" -> post))
     }
   }
@@ -33,7 +33,7 @@ class PostsController @Inject() (postService: PostService)(implicit ec: Executio
   }
 
   def update(id: UUID): Action[Post] = Action.async(jsonModelParser[Post](__ \ 'post)) { request =>
-    postService.update(request.body).map { post =>
+    postService.insertOrUpdate(request.body).map { post =>
       Ok(Json.obj("post" -> post))
     }
   }
