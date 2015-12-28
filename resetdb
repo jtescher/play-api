@@ -32,11 +32,6 @@ if [ -z "$DATABASE_PORT" ]; then
   DATABASE_PORT=$(sed -n '/^slick.dbs.default.db.port="\(.*\)"$/s//\1/p' "conf/application.conf")
 fi
 
-# Grab DB host from ENV variable or application.conf
-if [ -z "$DATABASE_HOST" ]; then
-  DATABASE_HOST=$(sed -n '/^slick.dbs.default.db.host="\(.*\)"$/s//\1/p' "conf/application.conf")
-fi
-
 echo "********** STARTING DATABASE RESTORE **********"
 
 {
@@ -45,10 +40,10 @@ echo "********** STARTING DATABASE RESTORE **********"
   echo "Role $DATABASE_USER already exists, skipping..."
 }
 
-psql -U postgres -c "DROP DATABASE IF EXISTS $DATABASE_NAME"
-psql -U postgres -c "DROP DATABASE IF EXISTS $TEST_DATABASE_NAME"
+psql -h "$DATABASE_HOST" -U postgres -c "DROP DATABASE IF EXISTS $DATABASE_NAME"
+psql -h "$DATABASE_HOST" -U postgres -c "DROP DATABASE IF EXISTS $TEST_DATABASE_NAME"
 
-psql -U postgres -c "CREATE DATABASE $DATABASE_NAME OWNER $DATABASE_USER;"
-psql -U postgres -c "CREATE DATABASE $TEST_DATABASE_NAME OWNER $DATABASE_USER;"
+psql -h "$DATABASE_HOST" -U postgres -c "CREATE DATABASE $DATABASE_NAME OWNER $DATABASE_USER;"
+psql -h "$DATABASE_HOST" -U postgres -c "CREATE DATABASE $TEST_DATABASE_NAME OWNER $DATABASE_USER;"
 
 echo "********** DATABASE RESTORE COMPLETE **********"
