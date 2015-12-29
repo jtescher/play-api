@@ -23,8 +23,8 @@ while keeping the code as expressive and free of boilerplate as possible.
 + Use 5 standard endoints with appropriate HTTP verb:
 
 ```
-GET       /v1/posts        # => Create
-POST      /v1/posts        # => Index
+GET       /v1/posts        # => Index
+POST      /v1/posts        # => Create
 GET       /v1/posts/:id    # => Show
 PUT       /v1/posts/:id    # => Update
 DELETE    /v1/posts/:id    # => Destroy
