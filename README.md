@@ -16,6 +16,7 @@ while keeping the code as expressive and free of boilerplate as possible.
 1. [Data Access Objects](#data-access-objects)
 1. [Database Migrations](#database-migrations)
 1. [Additional Files](#additional-files)
+1. [Tests](#tests)
 
 ## Routes
 
@@ -103,3 +104,13 @@ in [build.sbt](build.sbt).
 + Include a [activator](activator) wrapper file that downloads all necessary dependencies
 (serving the app and testing the app should be as simple as: `$ ./activator run` and `$ ./activator test`).
 + Include a [resetdb](resetdb) script that drops and re-creates the database for testing and new developers.
+
+## Tests
+
++ Prefer [ScalaTest](http://www.scalatest.org) over [Specs2](https://etorreborre.github.io/specs2).
++ Include integration tests and unit tests in the same package as the source files.
++ Use `Spec` as the suffix for unit tests and `IntegrationSpec` as the suffix for integration tests.
++ Reset the DB before each integration test with [DatabaseCleaner](test/utils/DatabaseCleaner.scala) to avoid order-dependant tests.
++ Prefer a real database over an in-memory stand in for integration tests to find DB specific bugs.
++ Use factories like the [PostFactory](test/factories/PostFactory.scala) to keep test setup DRY and expressive.
++ Prefer high level integration tests for common paths and unit tests for edge cases and full coverage.
