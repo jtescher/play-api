@@ -21,7 +21,7 @@ while keeping the code as expressive and free of boilerplate as possible.
 ## Routes
 
 + Use URL based API versioning. E.g. `/v1/posts`.
-+ Use 5 standard endoints with appropriate HTTP verb:
++ Use 5 standard endpoints with appropriate HTTP verb:
 
 ```
 GET       /v1/posts        # => Index
