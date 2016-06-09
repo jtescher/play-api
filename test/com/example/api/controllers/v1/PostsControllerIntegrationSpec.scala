@@ -1,5 +1,6 @@
 package com.example.api.controllers.v1
 
+import akka.stream.Materializer
 import com.example.api.models.exceptions.{ ModelFormatException, ModelNotFoundException }
 import factories.PostFactory
 import org.scalatest.BeforeAndAfterEach
@@ -14,6 +15,7 @@ import utils.{ DatabaseCleaner, TestDatabaseConfig }
 
 class PostsControllerIntegrationSpec extends PlaySpec with OneAppPerSuite with BeforeAndAfterEach with ScalaFutures {
   implicit val ec = app.injector.instanceOf[ExecutionContext]
+  implicit val mat = app.injector.instanceOf[Materializer]
   implicit override lazy val app = FakeApplication(additionalConfiguration = TestDatabaseConfig.config)
   val databaseCleaner = app.injector.instanceOf[DatabaseCleaner]
   val postFactory = app.injector.instanceOf[PostFactory]
@@ -26,7 +28,7 @@ class PostsControllerIntegrationSpec extends PlaySpec with OneAppPerSuite with B
     "return all posts" in {
       val post = postFactory.create()
 
-      val response = route(FakeRequest(GET, "/v1/posts")).get
+      val response = route(app, FakeRequest(GET, "/v1/posts")).get
 
       status(response) mustBe OK
       contentType(response) mustBe Some(JSON)
@@ -42,7 +44,7 @@ class PostsControllerIntegrationSpec extends PlaySpec with OneAppPerSuite with B
     "not return deleted posts" in {
       postFactory.create(deleted = true)
 
-      val response = route(FakeRequest(GET, "/v1/posts")).get
+      val response = route(app, FakeRequest(GET, "/v1/posts")).get
 
       status(response) mustBe OK
       contentType(response) mustBe Some(JSON)
@@ -63,7 +65,7 @@ class PostsControllerIntegrationSpec extends PlaySpec with OneAppPerSuite with B
         )
       )
 
-      val response = route(FakeRequest(POST, "/v1/posts").withJsonBody(postJson)).get
+      val response = route(app, FakeRequest(POST, "/v1/posts").withJsonBody(postJson)).get
 
       status(response) mustBe CREATED
       contentType(response) mustBe Some(JSON)
@@ -91,7 +93,7 @@ class PostsControllerIntegrationSpec extends PlaySpec with OneAppPerSuite with B
     "return the post if found" in {
       val post = postFactory.create()
 
-      val response = route(FakeRequest(GET, s"/v1/posts/${post.id}")).get
+      val response = route(app, FakeRequest(GET, s"/v1/posts/${post.id}")).get
 
       status(response) mustBe OK
       contentType(response) mustBe Some(JSON)
@@ -125,7 +127,7 @@ class PostsControllerIntegrationSpec extends PlaySpec with OneAppPerSuite with B
         )
       )
 
-      val response = route(FakeRequest(PUT, s"/v1/posts/${post.id}").withJsonBody(postJson)).get
+      val response = route(app, FakeRequest(PUT, s"/v1/posts/${post.id}").withJsonBody(postJson)).get
 
       status(response) mustBe OK
       contentType(response) mustBe Some(JSON)
@@ -153,7 +155,7 @@ class PostsControllerIntegrationSpec extends PlaySpec with OneAppPerSuite with B
     "delete the post" in {
       val post = postFactory.create()
 
-      val response = route(FakeRequest(DELETE, s"/v1/posts/${post.id}")).get
+      val response = route(app, FakeRequest(DELETE, s"/v1/posts/${post.id}")).get
 
       status(response) mustBe NO_CONTENT
     }

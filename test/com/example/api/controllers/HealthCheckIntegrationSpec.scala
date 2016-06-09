@@ -9,7 +9,7 @@ class HealthCheckIntegrationSpec extends PlaySpec with OneAppPerSuite {
 
   "#index" should {
     "return OK" in {
-      val response = route(FakeRequest(GET, "/")).get
+      val response = route(app, FakeRequest(GET, "/")).get
 
       status(response) mustBe OK
       contentType(response) mustBe Some(TEXT)
