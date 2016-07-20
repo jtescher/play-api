@@ -6,8 +6,8 @@
 set -o pipefail
 
 # todo - make this dynamic
-declare -r sbt_release_version="0.13.11"
-declare -r sbt_unreleased_version="0.13.11"
+declare -r sbt_release_version="0.13.12"
+declare -r sbt_unreleased_version="0.13.12"
 declare -r buildProps="project/build.properties"
 
 declare sbt_jar sbt_dir sbt_create sbt_version sbt_script
@@ -121,14 +121,14 @@ init_default_option_file () {
 }
 
 declare -r cms_opts="-XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC"
-declare -r jit_opts="-XX:ReservedCodeCacheSize=256m -XX:+TieredCompilation"
+declare -r jit_opts="-XX:ReservedCodeCacheSize=256m"
 declare -r default_jvm_opts_common="-Xms512m -Xmx1536m -Xss2m $jit_opts $cms_opts"
 declare -r noshare_opts="-Dsbt.global.base=project/.sbtboot -Dsbt.boot.directory=project/.boot -Dsbt.ivy.home=project/.ivy"
 declare -r latest_28="2.8.2"
 declare -r latest_29="2.9.3"
 declare -r latest_210="2.10.6"
 declare -r latest_211="2.11.8"
-declare -r latest_212="2.12.0-M4"
+declare -r latest_212="2.12.0-M5"
 declare -r sbt_launch_ivy_release_repo="http://repo.typesafe.com/typesafe/ivy-releases"
 declare -r sbt_launch_ivy_snapshot_repo="https://repo.scala-sbt.org/scalasbt/ivy-snapshots"
 declare -r sbt_launch_mvn_release_repo="http://repo.scala-sbt.org/scalasbt/maven-releases"
@@ -200,9 +200,9 @@ setJavaHomeQuietly () {
 }
 
 # if set, use JDK_HOME/JAVA_HOME over java found in path
-if [[ -e "$JDK_HOME/lib/tools.jar" ]]; then
+if [[ -n "$JDK_HOME" && -e "$JDK_HOME/lib/tools.jar" ]]; then
   setJavaHomeQuietly "$JDK_HOME"
-elif [[ -e "$JAVA_HOME/bin/java" ]]; then
+elif [[ -n "$JAVA_HOME" && -e "$JAVA_HOME/bin/java" ]]; then
   setJavaHomeQuietly "$JAVA_HOME"
 fi
 
