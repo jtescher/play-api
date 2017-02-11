@@ -1,18 +1,18 @@
 package com.example.api.controllers.v1
 
-import com.example.api.controllers.utils.ConstraintReadExtensions.nonEmpty
 import com.example.api.controllers.utils.ControllerConventions
 import com.example.api.models.Post
-import com.example.api.serializers.v1.PostSerializer.postJsonWrites
+import com.example.api.serializers.v1.PostSerializer._
 import com.example.api.services.PostService
 import com.google.inject.Inject
 import java.util.UUID
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{ Json, Reads, __ }
+import play.api.libs.json.{ Json, __ }
 import play.api.mvc.{ Action, AnyContent, Controller }
 import scala.concurrent.ExecutionContext
 
-class PostsController @Inject() (postService: PostService)(implicit ec: ExecutionContext) extends Controller with ControllerConventions {
+class PostsController @Inject() (postService: PostService)(implicit ec: ExecutionContext)
+    extends Controller
+    with ControllerConventions {
 
   def index: Action[AnyContent] = Action.async {
     postService.all.map { posts =>
@@ -43,12 +43,5 @@ class PostsController @Inject() (postService: PostService)(implicit ec: Executio
       NoContent
     }
   }
-
-  implicit val postJsonReads = (
-    (__ \ "id").read[UUID] and
-    (__ \ "title").read[String](nonEmpty) and
-    (__ \ "body").read[String](nonEmpty) and
-    Reads.pure(false)
-  )(Post.apply _)
 
 }
